@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../images/bg.jpg') no-repeat center center fixed; /* Ensure image is centered and fixed */
+    background-size: cover; /* Ensure the image covers the entire background */
+}   
+
+.wrapper {
+    width: 420px;
+    background: rgba(255, 255, 255, 0.15); 
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: #a25d5d;
+    border-radius: 12px;
+    padding: 30px 40px;
+    position: relative;
+    overflow: hidden; 
+    -webkit-backdrop-filter: blur(10px); /* Add blur effect for Safari */
+    backdrop-filter: blur(10px); /* Add blur effect */
+}
+
+.wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: blur(30px); 
+    z-index: -1; 
+}
+
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+    color: #800000;
+}
+
+.input-box {
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 20px;
+    color: #333;
+}
+
+.input-box input::placeholder {
+    color: #333;
+}
+
+.btn {
+    width: 100%;
+    height: 45px;
+    background: #800000;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+    color: #333;
+}
+
+.register-link a {
+    color: #800000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

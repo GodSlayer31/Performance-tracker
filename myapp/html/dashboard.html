@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Student Performance Tracker</h1>
+            <button class="logout-button" onclick="handleLogout()">Logout</button>
+        </header>
+        <div class="dashboard">
+            <div class="select-container">
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearSelect" onchange="saveSelection()">
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023" selected>2023</option>
+                    <option value="2024">2024</option>
+                </select>
+                <label for="subjectSelect">Select Subject:</label>
+                <select id="subjectSelect" onchange="filterGrades()">
+                    <option value="All">All</option>
+                    <option value="Attendance">Attendance</option>
+                    <option value="Quizzes">Quizzes</option>
+                    <option value="Assignments">Assignments</option>
+                    <option value="Midterm Exam">Midterm Exam</option>
+                    <option value="Final Exam">Final Exam</option>
+                    <option value="Project">Project</option>
+                    <option value="Participation">Participation</option>
+                </select>
+            </div>
+            
+            <h2>Grades Overview</h2>
+            <div class="table-container">
+                <table class="grades-table">
+                    <thead>
+                        <tr id="gradesHeader"></tr>
+                    </thead>
+                    <tbody>
+                        <tr id="gradesRow"></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h2>Grade Analytics</h2>
+            <canvas id="gradesChart"></canvas>
+        </div>
+        <footer class="footer">
+            <p>&copy; 2023 Student Performance Tracker. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        const grades = [
+            { subject: "Attendance", grade: 95 },
+            { subject: "Quizzes", grade: 88 },
+            { subject: "Assignments", grade: 92 },
+            { subject: "Midterm Exam", grade: 85 },
+            { subject: "Final Exam", grade: 97 },
+            { subject: "Project", grade: 89 },
+            { subject: "Participation", grade: 91 }
+        ];
+
+        function handleLogout() {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = "../index.html";
+        }
+
+        function filterGrades() {
+            const selectedSubject = document.getElementById("subjectSelect").value;
+            const filteredGrades = selectedSubject === "All" ? grades : grades.filter(grade => grade.subject === selectedSubject);
+            
+            const headerRow = document.getElementById("gradesHeader");
+            const gradeRow = document.getElementById("gradesRow");
+            headerRow.innerHTML = "<th>Subject</th><th>Grade</th>";
+            gradeRow.innerHTML = "";
+
+            filteredGrades.forEach(item => {
+                let tr = document.createElement("tr");
+                let subjectTd = document.createElement("td");
+                subjectTd.textContent = item.subject;
+                tr.appendChild(subjectTd);
+                let gradeTd = document.createElement("td");
+                gradeTd.textContent = item.grade;
+                tr.appendChild(gradeTd);
+                gradeRow.appendChild(tr);
+            });
+            updateChart(filteredGrades);
+        }
+
+        function updateChart(filteredGrades) {
+            const ctx = document.getElementById("gradesChart").getContext("2d");
+            if (window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: filteredGrades.map(g => g.subject),
+                    datasets: [{
+                        label: "Grades",
+                        data: filteredGrades.map(g => g.grade),
+                        backgroundColor: "rgba(0, 123, 255, 0.6)",
+                        borderColor: "rgba(0, 123, 255, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+        }
+
+        function loadSelection() {
+            filterGrades();
+        }
+
+        document.addEventListener("DOMContentLoaded", loadSelection);
+    </script>
+</body>
+</html>
